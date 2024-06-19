@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy and Pastable Webflow Element Converter</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Convert Clipboard to JSON</h1>
+    <iframe src="https://evercoder.github.io/clipboard-inspector/" frameborder="0" width="100%" height="400px"></iframe>
+
+    <h1>Convert JSON to Webflow</h1>
+    <textarea id="jsonInput"></textarea>
+    <button id="copyBTN">Copy</button>
+
+
+    <script>
+        document.querySelector('#copyBTN').addEventListener('click', function(){
+            let codeSnippetText = document.querySelector('#jsonInput').value;
+            if (codeSnippetText) {
+                try {
+                    let codeSnippet = JSON.parse(codeSnippetText);
+                    document.addEventListener("copy", (event) => {
+                        event.clipboardData.setData("application/json", JSON.stringify(codeSnippet));
+                        event.preventDefault();
+                    });
+                    document.execCommand('copy');
+                    this.textContent = 'Copied!';
+                    setTimeout(() => {
+                        this.textContent = 'Copy';
+                    }, 2000);
+                } catch (error) {
+                    alert("Error parsing JSON:", error);
+                }
+            } else {
+                alert("Empty JSON data or invalid content");
+            }
+        })
+  </script>
+</body>
+</html>
